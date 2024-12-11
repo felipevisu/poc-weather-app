@@ -1,35 +1,58 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect } from 'react';
+import './App.css';
+import useGeolocation from './hooks/useGeoLocation';
+import useWeather from './hooks/useWeather';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const {
+    geolocation,
+    loading: geolocationLoading,
+    error: geolocationError,
+  } = useGeolocation();
+  const {
+    fetchWeather,
+    weather,
+    loading: weatherLoading,
+    error: weatherError,
+  } = useWeather();
+
+  useEffect(() => {
+    if (geolocation) {
+      fetchWeather(geolocation);
+    }
+  }, [geolocation, fetchWeather]);
+
+  if (geolocationLoading || weatherLoading) return <>Loading...</>;
+
+  if (geolocationError) {
+    return <p>Error getting location: {geolocationError}</p>;
+  }
+
+  if (weatherError) {
+    return <p>Error fetching weather: {weatherError}</p>;
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="p-4 bg-blue-100 rounded">
+      {weather ? (
+        <>
+          <h1 className="text-2xl font-bold">
+            Weather in {weather.location.name}, {weather.location.region} (
+            {weather.location.country})
+          </h1>
+          <p className="text-lg">Temperature: {weather.current.temp_c}°C</p>
+          <p className="text-md">{weather.current.condition.text}</p>
+          <img
+            src={weather.current.condition.icon}
+            alt="Weather Icon"
+            className="w-16 h-16"
+          />
+        </>
+      ) : (
+        <p>Unable to retrieve weather data.</p>
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;

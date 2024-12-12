@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import './App.css';
 import useGeolocation from './hooks/useGeoLocation';
 import useWeather from './hooks/useWeather';
+import { Weather } from './components/Weather';
 
 function App() {
   const {
@@ -28,31 +29,11 @@ function App() {
     return <p>Error getting location: {geolocationError}</p>;
   }
 
-  if (weatherError) {
+  if (weatherError || !weather) {
     return <p>Error fetching weather: {weatherError}</p>;
   }
 
-  return (
-    <div className="p-4 bg-blue-100 rounded">
-      {weather ? (
-        <>
-          <h1 className="text-2xl font-bold">
-            Weather in {weather.location.name}, {weather.location.region} (
-            {weather.location.country})
-          </h1>
-          <p className="text-lg">Temperature: {weather.current.temp_c}°C</p>
-          <p className="text-md">{weather.current.condition.text}</p>
-          <img
-            src={weather.current.condition.icon}
-            alt="Weather Icon"
-            className="w-16 h-16"
-          />
-        </>
-      ) : (
-        <p>Unable to retrieve weather data.</p>
-      )}
-    </div>
-  );
+  return <Weather weather={weather} />;
 }
 
 export default App;

@@ -2,14 +2,30 @@ import { useCallback, useState } from 'react';
 import axios from 'axios';
 import { Geolocation } from './useGeoLocation';
 
-interface WeatherData {
+const WEATHER_API = 'http://api.weatherapi.com/v1/forecast.json';
+
+export type WeatherData = {
   location: { name: string; region: string; country: string };
   current: {
     temp_c: number;
     temp_f: number;
     condition: { text: string; icon: string };
   };
-}
+  forecast: {
+    forecastday: [
+      {
+        date: string;
+        day: {
+          maxtemp_c: number;
+          maxtemp_f: number;
+          mintemp_c: number;
+          mintemp_f: number;
+          condition: { text: string; icon: string };
+        };
+      }
+    ];
+  };
+};
 
 interface UseWeatherReturn {
   fetchWeather: (geolocation: Geolocation) => Promise<void>;
@@ -29,24 +45,20 @@ const useWeather = (): UseWeatherReturn => {
       setError(null);
 
       try {
-        console.log('aqui');
         const apiKey = import.meta.env.VITE_APP_WEATHER_API_KEY;
-        console.log('aqui 2');
 
         if (!apiKey) {
           setError('API key is missing.');
           setLoading(false);
           return;
         }
-        const response = await axios.get(
-          `http://api.weatherapi.com/v1/current.json`,
-          {
-            params: {
-              key: apiKey,
-              q: `${geolocation?.latitude},${geolocation?.longitude}`,
-            },
-          }
-        );
+        const response = await axios.get(WEATHER_API, {
+          params: {
+            key: apiKey,
+            q: `${geolocation?.latitude},${geolocation?.longitude}`,
+            days: 7,
+          },
+        });
         setWeather(response.data);
       } catch (err) {
         if (axios.isAxiosError(err)) {

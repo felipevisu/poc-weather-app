@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import axios from 'axios';
 import { Geolocation } from './useGeoLocation';
 
-const WEATHER_API = 'http://api.weatherapi.com/v1/forecast.json';
+const WEATHER_API = 'https://api.weatherapi.com/v1/forecast.json';
 
 export type WeatherData = {
   location: { name: string; region: string; country: string };

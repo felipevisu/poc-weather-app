@@ -8,8 +8,8 @@ interface WeatherProps {
 
 export const Weather = ({ weather }: WeatherProps) => {
   return (
-    <div className="p-4 bg-blue-100 rounded">
-      <h1 className="text-2xl font-bold">
+    <div className="min-h-screen p-8 bg-blue-100 rounded">
+      <h1 className="text-2xl font-bold text-center">
         Weather in {weather.location.name}, {weather.location.region} (
         {weather.location.country})
       </h1>

@@ -1,4 +1,5 @@
 import { WeatherData } from '../../hooks/useWeather';
+import { Temperature } from './Temperature';
 
 const DAY_NAMES = [
   'Monday',
@@ -30,8 +31,12 @@ export const Forecast = ({
             <br />
             <span className="text-sm font-semibold opacity-50">{date}</span>
           </p>
-          <p>Max: {day.maxtemp_c}</p>
-          <p>Min: {day.mintemp_c}</p>
+          <p>
+            Max: <Temperature c={day.maxtemp_c} f={day.maxtemp_f} />
+          </p>
+          <p>
+            Min: <Temperature c={day.mintemp_c} f={day.mintemp_f} />
+          </p>
           <img
             src={day.condition.icon}
             alt="Weather Icon"

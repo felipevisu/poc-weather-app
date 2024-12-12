@@ -1,4 +1,5 @@
 import { WeatherData } from '../../hooks/useWeather';
+import { ScaleSelector } from '../ScaleSelector';
 import { Current } from './Current';
 import { Forecast } from './Forecast';
 
@@ -13,6 +14,7 @@ export const Weather = ({ weather }: WeatherProps) => {
         Weather in {weather.location.name}, {weather.location.region} (
         {weather.location.country})
       </h1>
+      <ScaleSelector />
       <Current weather={weather.current} />
       <Forecast days={weather.forecast.forecastday} />
     </div>

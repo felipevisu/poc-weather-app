@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-
 import useGeolocation from './hooks/useGeoLocation';
 import useWeather from './hooks/useWeather';
 import { Weather } from './components/Weather';

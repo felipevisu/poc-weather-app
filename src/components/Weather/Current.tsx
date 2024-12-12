@@ -1,4 +1,5 @@
 import { WeatherData } from '../../hooks/useWeather';
+import { Temperature } from './Temperature';
 
 export const Current = ({ weather }: { weather: WeatherData['current'] }) => {
   return (
@@ -6,7 +7,9 @@ export const Current = ({ weather }: { weather: WeatherData['current'] }) => {
       <p>
         <b>Now</b>
       </p>
-      <p className="text-lg">Temperature: {weather.temp_c}°C</p>
+      <p className="text-lg">
+        Temperature: <Temperature c={weather.temp_c} f={weather.temp_f} />
+      </p>
       <p className="text-md">{weather.condition.text}</p>
       <img
         src={weather.condition.icon}
